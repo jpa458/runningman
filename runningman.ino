@@ -8,7 +8,7 @@ runningman.ino
 const unsigned int  PROGRAM_LENGTH  = 50; //# of periods
 const byte LED = 9;
 const unsigned int PERIOD = 60000;
-const unsigned int SWITCH_DELAY = 300;
+const unsigned int SWITCH_DELAY = 400;
 const int DIFFICULTY_LEVEL = 1;
 
 Port relays (1);
@@ -76,15 +76,17 @@ void loop () {
     Serial.print("Period : ");
     Serial.println(counter);
     
-    int value = DIFFICULTY_LEVEL + program[counter];
     
-    for (int j=0;j<abs(value);j++){
+    int value = program[counter];
+    int adjustedValue = abs(value) + DIFFICULTY_LEVEL;
+    
+    for (int j = 0; j < adjustedValue ; j++){
      (value > 0) ? speedUp() : slowDown();
     }
     
     if (value != 0) {
          Serial.println("Custom Delay");
-         unsigned int delayValue = PERIOD - abs(value)*SWITCH_DELAY; 
+         unsigned int delayValue = PERIOD - adjustedValue*SWITCH_DELAY; 
          Serial.println(delayValue);
          delay(delayValue);
     } else {
